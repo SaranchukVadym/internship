@@ -4,11 +4,10 @@ import com.epam.internship.dto.resume.ResumeResponseDTO;
 import com.epam.internship.dto.resume.ResumeUpdateDTO;
 import com.epam.internship.service.impl.ResumeServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/resume")
@@ -23,7 +22,7 @@ public class ControllerResume {
     }
 
     @GetMapping
-    public List<ResumeResponseDTO> getAll(
+    public Page<ResumeResponseDTO> getAll(
             @RequestParam(defaultValue = "", value = "search") String search,
             @RequestParam(defaultValue = "0", name = "page") Integer page,
             @RequestParam(defaultValue = "9", name = "itemsPerPage") Integer itemsPerPage) {
