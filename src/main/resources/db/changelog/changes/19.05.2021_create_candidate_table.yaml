@@ -1,0 +1,115 @@
+databaseChangeLog:
+  - changeSet:
+      id: 19.05.2021_create_candidate_table
+      author: Saranchuk Vadym
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: CANDIDATE
+      changes:
+        - createTable:
+            tableName: CANDIDATE
+            columns:
+              - column:
+                  name: CN_ID
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: RSM_ID
+                  type: INT
+                  defaultValue: null
+                  constraints:
+                    unique: true
+                    foreignKeyName: fk_candidate_resume
+                    onDelete: cascade
+                    onUpdate: cascade
+                    references: RESUME(RSM_ID)
+              - column:
+                  name: CN_FIRST_NAME
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CN_LAST_NAME
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CN_PHONE
+                  type: VARCHAR(17)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CN_EMAIL
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CN_SKYPE
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CN_ENGLISH_LEVEL
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CN_MAIN_SKILL
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CN_OTHER_SKILLS
+                  type: TEXT
+                  defaultValue: null
+              - column:
+                  name: CN_COUNTRY
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CN_CITY
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CN_INSTITUTION
+                  type: VARCHAR(150)
+                  defaultValue: null
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CN_FACULTY
+                  type: VARCHAR(150)
+                  defaultValue: null
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CN_SPECIALITY
+                  type: VARCHAR(150)
+                  defaultValue: null
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CN_GRADUATION_DATE
+                  type: DATE
+                  defaultValue: null
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CN_STATUS
+                  type: TEXT
+                  defaultValue: null
+              - column:
+                  name: CN_CREATED_AT
+                  type: DATETIME
+                  defaultValue: NOW()
+              - column:
+                  name: CN_UPDATED_AT
+                  type: DATETIME
+                  defaultValue: NOW()

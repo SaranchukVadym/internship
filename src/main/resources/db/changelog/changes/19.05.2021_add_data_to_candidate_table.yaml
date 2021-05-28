@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 21.04.2021_add-data-to-candidate-table.yaml
+      author: Saranchuk Vadim
+      changes:
+        - sqlFile:
+            dbms: mysql
+            stripComments: true
+            relativeToChangelogFile: true
+            path: data/add-data-to-candidate-table.sql

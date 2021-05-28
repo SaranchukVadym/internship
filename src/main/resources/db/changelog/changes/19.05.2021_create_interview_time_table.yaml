@@ -1,0 +1,52 @@
+databaseChangeLog:
+  - changeSet:
+      id: 19.05.2021_create_interview_time_table
+      author: Saranchuk Vadym
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: INTERVIEW_TIME
+      changes:
+        - createTable:
+            tableName: INTERVIEW_TIME
+            columns:
+              - column:
+                  name: ITM_ID
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: EV_ID
+                  type: INT
+                  defaultValue: null
+                  constraints:
+                    foreignKeyName: fk_interview_time_event
+                    onDelete: cascade
+                    onUpdate: cascade
+                    references: EVENT(EV_ID)
+              - column:
+                  name: CN_ID
+                  type: INT
+                  constraints:
+                    foreignKeyName: fk_interview_time_candidate
+                    references: CANDIDATE(CN_ID)
+                    onDelete: cascade
+                    onUpdate: cascade
+              - column:
+                  name: EMP_ID
+                  type: INT
+                  defaultValue: null
+              - column:
+                  name: ITM_BEGIN_DATE
+                  type: DATETIME
+              - column:
+                  name: ITM_CREATED_AT
+                  type: DATETIME
+                  defaultValue: NOW()
+              - column:
+                  name: ITM_UPDATED_AT
+                  type: DATETIME
+                  defaultValue: null

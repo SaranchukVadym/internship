@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: 29.05.2021_create_resume_table
+      author: Saranchuk Vadym
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: RESUME
+      changes:
+        - createTable:
+            tableName: RESUME
+            columns:
+              - column:
+                  name: RSM_ID
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: resume_pk
+                    nullable: false
+              - column:
+                  name: RSM_LINK
+                  type: VARCHAR(500)
+                  defaultValue: null
+              - column:
+                  name: RSM_EXT
+                  type: VARCHAR(50)
+              - column:
+                  name: RSM_NAME
+                  type: VARCHAR(100)
+              - column:
+                  name: RSM_SIZE
+                  type: INT
+              - column:
+                  name: RSM_CREATED_AT
+                  type: DATETIME
+                  defaultValue: NOW()
+                  constraints:
+                    nullable: false

@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: 19.05.2021_create_candidate_availability_time_table
+      author: Saranchuk Vadym
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: CANDIDATE_AVAILABILITY_TIME
+      changes:
+        - createTable:
+            tableName: CANDIDATE_AVAILABILITY_TIME
+            columns:
+              - column:
+                  name: CAT_ID
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: CN_ID
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CAT_DATETIME
+                  type: DATETIME
+              - column:
+                  name: CAT_CREATED_AT
+                  type: DATETIME
+                  defaultValue: NOW()
+              - column:
+                  name: CAT_UPDATED_AT
+                  type: DATETIME
+                  defaultValue: NOW()
+        - addForeignKeyConstraint:
+            baseColumnNames: CN_ID
+            baseTableName: CANDIDATE_AVAILABILITY_TIME
+            constraintName: FK_CANDIDATE_AVAILABILITY_TIME
+            onDelete: CASCADE
+            onUpdate: CASCADE
+            referencedColumnNames: CN_ID
+            referencedTableName: CANDIDATE

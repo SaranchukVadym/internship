@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changes/29.05.2021_create_resume_table.yaml
+  - include:
+      file: db/changelog/changes/19.05.2021_create_candidate_table.yaml
+  - include:
+      file: db/changelog/changes/19.05.2921_create_event_table.yaml
+  - include:
+      file: db/changelog/changes/19.05.2021_create_interview_time_table.yaml
+  - include:
+      file: db/changelog/changes/19.05.2021_add_data_to_candidate_table.yaml
+  - include:
+      file: db/changelog/changes/19.05.2021_create_candidate_availability_time_table.yaml
