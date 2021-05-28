@@ -2,7 +2,6 @@ package com.epam.internship.service.impl;
 
 import com.epam.internship.dao.InterviewTimeDAO;
 import com.epam.internship.dao.rsql.CustomRsqlVisitor;
-import com.epam.internship.dto.candidate.CandidateResponseDTO;
 import com.epam.internship.dto.interview_time.InterviewTimeCreateDTO;
 import com.epam.internship.dto.interview_time.InterviewTimeResponseDTO;
 import com.epam.internship.dto.interview_time.InterviewTimeUpdateDTO;
@@ -14,6 +13,7 @@ import cz.jirutka.rsql.parser.RSQLParser;
 import cz.jirutka.rsql.parser.ast.Node;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -21,8 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -43,27 +42,24 @@ public class InterviewTimeServiceImpl implements InterviewTimeService {
     }
 
     @Override
-    public List<InterviewTimeResponseDTO> getAllPageable(Pageable pageable, String search) {
+    public Page<InterviewTimeResponseDTO> getAllPageable(Pageable pageable, String search) {
 
         if (search.isEmpty()) {
-            return interviewTimeDAO.findAll(pageable).stream()
-                    .map((InterviewTimeEntity interviewTimeEntity) -> (InterviewTimeResponseDTO) mapper
-                            .convertTo(interviewTimeEntity, InterviewTimeResponseDTO.class))
-                    .collect(Collectors.toList());
+            return interviewTimeDAO.findAll(pageable).map(
+                    interviewTimeEntity -> mapper.convertTo(interviewTimeEntity, InterviewTimeResponseDTO.class));
         }
 
         Node rootNode = new RSQLParser().parse(search);
         Specification<InterviewTimeEntity> specification = rootNode.accept(new CustomRsqlVisitor<>());
 
-        return interviewTimeDAO.findAll(specification, pageable).stream()
-                .map((InterviewTimeEntity interviewTimeEntity) -> (InterviewTimeResponseDTO) mapper
-                        .convertTo(interviewTimeEntity, InterviewTimeResponseDTO.class))
-                .collect(Collectors.toList());
+        return interviewTimeDAO.findAll(specification, pageable).map(
+                interviewTimeEntity -> mapper.convertTo(interviewTimeEntity, InterviewTimeResponseDTO.class));
     }
 
     @Override
     public InterviewTimeCreateDTO save(InterviewTimeCreateDTO interviewTimeCreateDTO) {
-        CandidateResponseDTO candidateResponseDTO = candidateService.findById(interviewTimeCreateDTO.getCnId());
+        Optional.of(candidateService.findById(interviewTimeCreateDTO.getCnId()))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Candidate not found"));
 
         return mapper.convertTo(interviewTimeDAO
                         .save(mapper.convertTo(interviewTimeCreateDTO, InterviewTimeEntity.class)),
