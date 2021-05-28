@@ -30,6 +30,9 @@ dependencies {
 	implementation 'cz.jirutka.rsql:rsql-parser:2.1.0'
 	implementation 'org.modelmapper:modelmapper:2.4.0'
 	implementation 'javax.validation:validation-api:2.0.1.Final'
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+	implementation 'io.springfox:springfox-swagger2:3.0.0'
+	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
 }
 
 test {
