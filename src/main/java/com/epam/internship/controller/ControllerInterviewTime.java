@@ -6,10 +6,9 @@ import com.epam.internship.dto.interview_time.InterviewTimeResponseDTO;
 import com.epam.internship.dto.interview_time.InterviewTimeUpdateDTO;
 import com.epam.internship.service.impl.InterviewTimeServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/interviewtime")
@@ -24,7 +23,7 @@ public class ControllerInterviewTime {
     }
 
     @GetMapping
-    public List<InterviewTimeResponseDTO> getAllInterviewTime(
+    public Page<InterviewTimeResponseDTO> getAllInterviewTime(
             @RequestParam(defaultValue = "", name = "search") String search,
             @RequestParam(defaultValue = "0", name = "page") Integer page,
             @RequestParam(defaultValue = "15", name = "itemsPerPage") Integer itemsPerPage) {
