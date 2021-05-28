@@ -23,6 +23,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Transactional
@@ -63,9 +64,8 @@ public class CandidateServiceImpl implements CandidateService {
         Map<String, Object> prop = new HashMap<>();
         prop.put("name", candidateCreateDTO.getFirstName());
 
-        return mapper.convertTo(candidateDAO.save(candidateDAO.save(mapper
-                        .convertTo(candidateCreateDTO, CandidateEntity.class))),
-                CandidateResponseDTO.class);
+        return mapper.convertTo(candidateDAO.save(
+                mapper.convertTo(candidateCreateDTO, CandidateEntity.class)), CandidateResponseDTO.class);
     }
 
     @Override

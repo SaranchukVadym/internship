@@ -16,6 +16,7 @@ import com.epam.internship.service.ResumeService;
 import cz.jirutka.rsql.parser.RSQLParser;
 import cz.jirutka.rsql.parser.ast.Node;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,20 +47,18 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public List<ResumeResponseDTO> getAllPageable(Pageable pageable, String search) {
+    public Page<ResumeResponseDTO> getAllPageable(Pageable pageable, String search) {
 
         if (search.isEmpty()) {
-            return resumeDAO.findAll(pageable).stream().map((ResumeEntity entity) ->
-                    (ResumeResponseDTO) mapper.convertTo(entity, ResumeResponseDTO.class))
-                    .collect(Collectors.toList());
+            return resumeDAO.findAll(pageable).map(
+                    resumeEntity -> mapper.convertTo(resumeEntity, ResumeResponseDTO.class));
         }
 
         Node rootNode = new RSQLParser().parse(search);
         Specification<ResumeEntity> specification = rootNode.accept(new CustomRsqlVisitor<>());
 
-        return resumeDAO.findAll(specification, pageable).stream().map((ResumeEntity entity) ->
-                (ResumeResponseDTO) mapper.convertTo(entity, ResumeResponseDTO.class))
-                .collect(Collectors.toList());
+        return resumeDAO.findAll(specification, pageable).map(
+                resumeEntity -> mapper.convertTo(resumeEntity, ResumeResponseDTO.class));
     }
 
     @Override
